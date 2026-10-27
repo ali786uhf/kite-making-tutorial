@@ -1,0 +1,806 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<title>Kite Making Tutorial</title>
+<style>
+:root {
+  color-scheme: light;
+  --ink: #171717;
+  --muted: #626262;
+  --line: #dedede;
+  --paper: #fff;
+  --soft: #f5f5f5;
+  --accent: #171717;
+  --radius: 12px;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #f8f8f8;
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+button, input { font: inherit; }
+button { cursor: pointer; }
+button:focus-visible, input:focus-visible, a:focus-visible {
+  outline: 3px solid #777;
+  outline-offset: 3px;
+}
+header {
+  background: white;
+  border-bottom: 1px solid var(--line);
+  padding: 22px 18px;
+}
+.header-inner, main, footer {
+  width: min(100% - 28px, 1050px);
+  margin-inline: auto;
+}
+.brand {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--muted);
+}
+h1 {
+  margin: 4px 0;
+  font-size: clamp(27px, 5vw, 38px);
+  line-height: 1.2;
+  letter-spacing: -1px;
+}
+header p { margin: 8px 0 0; color: var(--muted); }
+main { padding: 22px 0 40px; }
+.layout {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  align-items: start;
+  gap: 20px;
+}
+.panel, .tutorial {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.panel { padding: 18px; }
+.panel h2, .tutorial h2 {
+  font-size: 19px;
+  line-height: 1.3;
+  margin: 0 0 14px;
+}
+.materials {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.materials li { margin: 12px 0; }
+.materials label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+input[type="checkbox"] {
+  width: 19px;
+  height: 19px;
+  margin-top: 3px;
+  accent-color: var(--ink);
+  flex: 0 0 auto;
+}
+.materials input:checked + span {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+.small-note {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 14px;
+}
+.steps-heading {
+  margin-top: 26px !important;
+}
+.step-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 5px;
+}
+.step-link {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 9px;
+  text-align: left;
+  font-size: 14px;
+}
+.step-link:hover { background: var(--soft); }
+.step-link[aria-current="step"] {
+  border-color: var(--ink);
+  background: var(--soft);
+  font-weight: 700;
+}
+.step-number {
+  width: 29px;
+  height: 29px;
+  border: 1px solid #bdbdbd;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  font-size: 13px;
+}
+.step-link[aria-current="step"] .step-number {
+  background: var(--ink);
+  color: white;
+  border-color: var(--ink);
+}
+.tutorial { overflow: hidden; }
+.tutorial-top { padding: 22px 22px 12px; }
+.eyebrow {
+  color: var(--muted);
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+}
+.step-title {
+  font-size: clamp(23px, 4vw, 30px);
+  margin: 5px 0 10px;
+  line-height: 1.25;
+}
+.progress-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.progress-track {
+  height: 6px;
+  background: #e9e9e9;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.progress-fill {
+  width: 11.111%;
+  height: 100%;
+  background: var(--ink);
+  transition: width .2s ease;
+}
+.diagram-wrap {
+  margin: 10px 22px 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: white;
+}
+.diagram {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 390px;
+  margin: auto;
+}
+.diagram text {
+  font-family: Arial, Helvetica, sans-serif;
+  fill: #111;
+  font-size: 15px;
+}
+.diagram .shape {
+  stroke: #111;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  fill: white;
+}
+.diagram .fold {
+  stroke: #555;
+  stroke-width: 1.7;
+  stroke-dasharray: 6 5;
+  fill: none;
+}
+.diagram .cut {
+  stroke: #111;
+  stroke-width: 2.5;
+  stroke-dasharray: 8 5;
+  fill: none;
+}
+.diagram .arrow {
+  stroke: #111;
+  stroke-width: 2;
+  fill: none;
+}
+.diagram .thin {
+  stroke: #555;
+  stroke-width: 1.3;
+  fill: none;
+}
+.diagram .removed {
+  fill: #eee;
+  stroke: #777;
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+}
+.diagram .point {
+  fill: #111;
+  stroke: none;
+}
+.diagram-caption {
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  margin: 6px 0 2px;
+}
+.step-description {
+  padding: 20px 24px 24px;
+}
+.step-description p { margin: 0; font-size: 17px; }
+.tip {
+  margin-top: 15px;
+  background: var(--soft);
+  border-left: 3px solid var(--ink);
+  padding: 10px 13px;
+  font-size: 14px;
+}
+.nav {
+  border-top: 1px solid var(--line);
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.btn {
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: white;
+  border-radius: 8px;
+  padding: 11px 17px;
+  font-weight: 700;
+  min-height: 44px;
+}
+.btn:hover { background: #383838; }
+.btn.secondary {
+  background: white;
+  color: var(--ink);
+}
+.btn.secondary:hover { background: var(--soft); }
+.btn:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+.nav-status {
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+}
+.reset-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+.save-status { font-size: 13px; color: var(--muted); }
+footer {
+  padding: 0 0 28px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+.mobile-steps { display: none; }
+[hidden] { display: none !important; }
+
+@media (max-width: 720px) {
+  .header-inner, main, footer { width: min(100% - 20px, 550px); }
+  header { padding: 18px 0; }
+  main { padding-top: 13px; }
+  .layout { grid-template-columns: 1fr; gap: 14px; }
+  .sidebar { display: contents; }
+  .materials-panel { order: 0; }
+  .tutorial { order: 1; }
+  .steps-panel { order: 2; }
+  .panel { padding: 15px; }
+  .materials-panel h2 { margin-bottom: 8px; }
+  .materials { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; }
+  .materials li { margin: 5px 0; }
+  .small-note { margin-top: 8px; }
+  .steps-panel { display: none; }
+  .mobile-steps {
+    display: block;
+    width: 100%;
+    padding: 9px 11px;
+    margin: 0 0 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: white;
+    font-size: 15px;
+  }
+  .tutorial-top { padding: 17px 16px 10px; }
+  .diagram-wrap { margin: 8px 10px 0; padding: 5px; }
+  .diagram { max-height: 320px; }
+  .step-description { padding: 17px; }
+  .step-description p { font-size: 16px; }
+  .nav { padding: 12px; }
+  .btn { padding: 10px 13px; }
+  .nav-status { font-size: 12px; }
+}
+@media print {
+  @page { margin: 12mm; }
+  body { background: white; color: black; font-size: 12pt; }
+  header { padding: 0 0 12px; }
+  .header-inner, main, footer { width: 100%; }
+  main { padding: 12px 0; }
+  .layout { display: block; }
+  .sidebar, .nav, .reset-row, .mobile-steps, footer { display: none !important; }
+  .tutorial { border: 0; overflow: visible; }
+  .tutorial-top { padding: 10px 0; }
+  .diagram-wrap { margin: 8px 0; }
+  .diagram { max-height: 220px; }
+  .step-description { padding: 10px 0; }
+  .progress-track { border: 1px solid #aaa; }
+  .progress-fill { background: #aaa; }
+  .tutorial { break-inside: avoid; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="brand">DIY · Paper Craft</div>
+    <h1>Kite Making Tutorial</h1>
+    <p>Follow these nine steps to make your own paper kite.</p>
+  </div>
+</header>
+
+<main>
+  <div class="layout">
+    <aside class="sidebar">
+      <section class="panel materials-panel" aria-labelledby="materials-title">
+        <h2 id="materials-title">Materials checklist</h2>
+        <ul class="materials">
+          <li><label><input type="checkbox" data-material="paper"><span>30 × 30 inch square kite paper</span></label></li>
+          <li><label><input type="checkbox" data-material="ruler"><span>Ruler</span></label></li>
+          <li><label><input type="checkbox" data-material="pencil"><span>Pencil</span></label></li>
+          <li><label><input type="checkbox" data-material="scissors"><span>Scissors</span></label></li>
+        </ul>
+        <p class="small-note">Tick each item as you prepare it. Your checklist is saved automatically.</p>
+      </section>
+
+      <section class="panel steps-panel" aria-labelledby="steps-title">
+        <h2 id="steps-title" class="steps-heading">Tutorial steps</h2>
+        <ol class="step-list" id="step-list"></ol>
+      </section>
+    </aside>
+
+    <section class="tutorial" aria-labelledby="step-title">
+      <div class="tutorial-top">
+        <div class="eyebrow">Kite construction guide</div>
+        <h2 class="step-title" id="step-title">Step 1: Prepare the paper</h2>
+        <div class="progress-row">
+          <span id="step-count">Step 1 of 9</span>
+          <span id="progress-percent">11% complete</span>
+        </div>
+        <div
+          class="progress-track"
+          id="progress-track"
+          role="progressbar"
+          aria-label="Tutorial progress"
+          aria-valuemin="1"
+          aria-valuemax="9"
+          aria-valuenow="1"
+        >
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <select id="mobile-steps" class="mobile-steps" aria-label="Jump to a tutorial step">
+        <option value="0">Step 1 — Prepare the paper</option>
+        <option value="1">Step 2 — Fold diagonally</option>
+        <option value="2">Step 3 — Fold again</option>
+        <option value="3">Step 4 — Measure 17 inches</option>
+        <option value="4">Step 5 — Reopen the fold</option>
+        <option value="5">Step 6 — Trim the first side</option>
+        <option value="6">Step 7 — Measure 16 inches</option>
+        <option value="7">Step 8 — Make the D-like cut</option>
+        <option value="8">Step 9 — Unfold the kite</option>
+      </select>
+
+      <div class="diagram-wrap">
+        <svg id="diagram-1" class="diagram" viewBox="0 0 400 340" role="img" aria-labelledby="svg-title-1 svg-desc-1">
+          <title id="svg-title-1">A square sheet of kite paper</title>
+          <desc id="svg-desc-1">A 30 by 30 inch square with dimension labels.</desc>
+          <defs>
+            <marker id="a1" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6" fill="none" stroke="#111"/>
+            </marker>
+          </defs>
+          <rect x="92" y="43" width="216" height="216" class="shape"/>
+          <path d="M92 28 V18 M308 28 V18 M92 23 H308" class="thin"/>
+          <text x="200" y="15" text-anchor="middle">30 in</text>
+          <path d="M79 43 H67 M79 259 H67 M73 43 V259" class="thin"/>
+          <text x="55" y="151" text-anchor="middle" transform="rotate(-90 55 151)">30 in</text>
+          <text x="200" y="291" text-anchor="middle">Square kite paper</text>
+          <text x="200" y="314" text-anchor="middle">30 × 30 inches</text>
+        </svg>
+
+        <svg id="diagram-2" class="diagram" viewBox="0 0 400 340" role="img" aria-labelledby="svg-title-2 svg-desc-2" hidden>
+          <title id="svg-title-2">Fold the square diagonally</title>
+          <desc id="svg-desc-2">A square, diagonal fold direction, and the resulting triangular paper.</desc>
+          <defs><marker id="a2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6" fill="none" stroke="#111"/></marker></defs>
+          <rect x="22" y="56" width="145" height="145" class="shape"/>
+          <path d="M22 56 L167 201" class="cut" marker-end="url(#a2)"/>
+          <text x="94" y="39" text-anchor="middle">30 in</text>
+          <text x="94" y="225" text-anchor="middle">Square</text>
+          <path d="M181 128 H215" class="arrow" marker-end="url(#a2)"/>
+          <path d="M238 56 L383 201 L238 201 Z" class="shape"/>
+          <path d="M238 56 L238 201" class="fold"/>
+          <text x="310" y="229" text-anchor="middle">Folded triangle</text>
+          <text x="200" y="278" text-anchor="middle">Bring opposite corners together</text>
+          <text x="200" y="301" text-anchor="middle">and attach them.</text>
+        </svg>
+
+        <svg id="diagram-3" class="diagram" viewBox="0 0 400 340" role="img" aria-labelledby="svg-title-3 svg-desc-3" hidden>
+          <title id="svg-title-3">Fold into a smaller triangle</title>
+          <desc id="svg-desc-3">A triangle with points A and C at the sharp corners and B at the folded open edge.</desc>
+          <path d="M200 37 L57 280 L343 280 Z" class="shape"/>
+          <path d="M200 37 L200 280" class="fold"/>
+          <circle cx="200" cy="37" r="4" class="point"/>
+          <circle cx="57" cy="280" r="4" class="point"/>
+          <circle cx="343" cy="280" r="4" class="point"/>
+          <text x="200" y="23" text-anchor="middle">A</text>
+          <text x="41" y="301" text-anchor="middle">C</text>
+          <text x="359" y="301" text-anchor="middle">B</text>
+          <text x="200" y="321" text-anchor="middle">Folded/open edge at B</text>
+          <text x="200" y="166" text-anchor="middle">Fold again</text>
+        </svg>
+
+        <svg id="diagram-4" class="diagram" viewBox="0 0 400 340" role="img" aria-labelledby="svg-title-4 svg-desc-4" hidden>
+          <title id="svg-title-4">Measure 17 inches and cut at about 20 degrees</title>
+          <desc id="svg-desc-4">A folded triangle with a marked 17 inch distance, angled cut line, and shaded removed paper.</desc>
+          <defs><marker id="a4" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6" fill="none" stroke="#111"/></marker></defs>
+          <path d="M66 277 L157 43 L337 277 Z" class="shape"/>
+          <path d="M157 43 L245 277" class="thin"/>
+          <path d="M157 43 L226 225" class="arrow" marker-end="url(#a4)"/>
+          <path d="M157 43 L244 260 L222 277 Z" class="removed"/>
+          <path d="M157 43 L222 277" class="cut"/>
+          <text x="121" y="154">17 in</text>
+          <text x="185" y="166">20°</text>
+          <text x="275" y="233">Cut</text>
+          <text x="278" y="251">line</text>
+          <text x="200" y="313" text-anchor="middle">Shaded area = removed piece</text>
+        </svg>
+
+        <svg id="diagram-5" class="diagram" viewBox="0 0 400 340" role="img" aria-labelledby="svg-title-5 svg-desc-5" hidden>
+          <title id="svg-title-5">Reopen the second fold</title>
+          <desc id="svg-desc-5">An opened paper triangle with three uneven sides.</desc>
+          <path d="M200 35 L59 285 L344 253 Z" class="shape"/>
+          <path d="M200 35 L200 253" class="fold"/>
+          <path d="M59 285 L200 253 L344 253" class="thin"/>
+          <text x="200" y="19" text-anchor="middle">Top</text>
+          <text x="200" y="309" text-anchor="middle">Reopen the second triangle</text>
+          <text x="200" y="329" text-anchor="middle">Three uneven sides</text>
+        </svg>
+
+        <svg id="diagram-6" class="diagram" viewBox="0 0 400 340" role="img" aria-labelledby="svg-title-6 svg-desc-6" hidden>
+          <title id="svg-title-6">Fold and trim the first side</title>
+          <desc id="svg-desc-6">An uneven paper outline with an extra flap folded inward and a straight trim edge.</desc>
+          <defs><marker id="a6" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6" fill="none" stroke="#111"/></marker></defs>
+          <path d="M200 38 L59 280 L344 255 Z" class="shape"/>
+          <path d="M59 280 L135 148 L174 256 Z" class="removed"/>
+          <path d="M135 148 L174 256" class="cut"/>
+          <path d="M105 212 L143 226" class="arrow" marker-end="url(#a6)"/>
+          <text x="92" y="202">Fold</text>
+          <text x="200" y="311" text-anchor="middle">Fold extra paper over</text>
+          <text x="200" y="330" text-anchor="middle">and trim to a straight edge</text>
+        </svg>
+
+        <svg id="diagram-7" class="diagram" viewBox="0 0 400 340" role="img" aria-labelledby="svg-title-7 svg-desc-7" hidden>
+          <title id="svg-title-7">Measure 16 inches and trim the second side</title>
+          <desc id="svg-desc-7">A paper outline with a 16 inch measurement, cut line, and extra paper on the upper side.</desc>
+          <defs><marker id="a7" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6" fill="none" stroke="#111"/></marker></defs>
+          <path d="M199 37 L63 280 L339 258 Z" class="shape"/>
+          <path d="M199 37 L260 243" class="thin"/>
+          <path d="M199 37 L260 243 L339 258 Z" class="removed"/>
+          <path d="M199 37 L260 243" class="cut"/>
+          <text x="218" y="144">16 in</text>
+          <text x="289" y="224">Extra</text>
+          <text x="289" y="242">paper</text>
+          <path d="M288 198 L305 212" class="arrow" marker-end="url(#a7)"/>
+          <text x="200" y="311" text-anchor="middle">Cut and trim the second side</text>
+          <text x="200" y="330" text-anchor="middle">Upper side has extra paper</text>
+        </svg>
+
+        <svg id="diagram-8" class="diagram" viewBox="0 0 400 340" role="img" aria-labelledby="svg-title-8 svg-desc-8" hidden>
+          <title id="svg-title-8">Make the D-like correction cut</title>
+          <desc id="svg-desc-8">A kite paper outline with a 17 inch center-to-top measurement and a cut extending to the extra side.</desc>
+          <defs><marker id="a8" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6" fill="none" stroke="#111"/></marker></defs>
+          <path d="M200 35 L57 280 L340 260 L310 210 Z" class="shape"/>
+          <path d="M200 35 L200 280" class="fold"/>
+          <path d="M200 35 L200 163 L310 210" class="cut"/>
+          <path d="M200 163 L310 210 L292 235 Z" class="removed"/>
+          <path d="M200 183 L200 53" class="arrow" marker-end="url(#a8)"/>
+          <text x="211" y="111">17 in</text>
+          <text x="254" y="180">Cut to</text>
+          <text x="254" y="198">extra side</text>
+          <text x="200" y="311" text-anchor="middle">Center to top: 17 inches</text>
+          <text x="200" y="330" text-anchor="middle">Cut out toward the extra side</text>
+        </svg>
+
+        <svg id="diagram-9" class="diagram" viewBox="0 0 400 340" role="img" aria-labelledby="svg-title-9 svg-desc-9" hidden>
+          <title id="svg-title-9">Finished 1.5 tawa gudda kite outline</title>
+          <desc id="svg-desc-9">The final unfolded paper kite, shown as a clear symmetrical-style outline with a pointed top, broad shoulders, and a tapered lower body.</desc>
+          <path d="M200 27 L105 119 L61 264 L200 306 L339 264 L295 119 Z" class="shape"/>
+          <path d="M200 27 L200 306" class="fold"/>
+          <path d="M200 27 L105 119 L61 264 L200 306 L339 264 L295 119 Z" fill="none" stroke="#111" stroke-width="2.5" stroke-linejoin="round"/>
+          <circle cx="200" cy="27" r="3" class="point"/>
+          <text x="200" y="18" text-anchor="middle">Top</text>
+          <text x="200" y="331" text-anchor="middle">Finished 1.5 tawa gudda</text>
+        </svg>
+
+        <p class="diagram-caption" id="diagram-caption">Square paper · 30 × 30 inches</p>
+      </div>
+
+      <div class="step-description">
+        <p id="step-description" aria-live="polite">Start with a perfect square kite paper sheet, 30 × 30 inches.</p>
+        <div class="tip" id="step-tip">Make sure the paper lies flat before starting.</div>
+      </div>
+
+      <div class="nav">
+        <button type="button" class="btn secondary" id="prev-btn" disabled>← Previous</button>
+        <span class="nav-status" id="nav-status">Step 1 of 9</span>
+        <button type="button" class="btn" id="next-btn">Next →</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="reset-row">
+    <span class="save-status" id="save-status" role="status">Progress saves automatically on this device.</span>
+    <button type="button" class="btn secondary" id="reset-btn">Reset progress</button>
+  </div>
+</main>
+
+<footer>
+  Kite Making Tutorial · A simple, free, browser-based paper craft guide
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  const STORAGE_KEY = "kite-making-tutorial-v1";
+
+  const steps = [
+    {
+      title: "Prepare the paper",
+      caption: "Square paper · 30 × 30 inches",
+      description: "Start with a perfect square kite paper sheet, 30 × 30 inches.",
+      tip: "Make sure the paper lies flat before starting."
+    },
+    {
+      title: "Fold diagonally",
+      caption: "First fold · Opposite corners meet",
+      description: "Fold diagonally from one corner to the opposite corner to form a triangle; opposite corners meet and are attached.",
+      tip: "Align the opposite corners before pressing the fold."
+    },
+    {
+      title: "Fold again",
+      caption: "Second fold · Identify A, B and C",
+      description: "Fold again the same way joining the other two opposite corners to form a smaller triangle. Fold neatly and uniformly so all corners align. Shape is an equilateral-looking triangle. Label points A, B, C: A and C are perfect sharp corners; B has no corner (folded/open edge).",
+      tip: "Keep the folds neat and the corners aligned."
+    },
+    {
+      title: "Measure 17 inches",
+      caption: "17 in · Approximately 20° cut",
+      description: "From the A-to-B side, measure 17 inches starting from point A. Cut with a straight line at a slight angle of about 20 degrees. Show the cut line and removed piece.",
+      tip: "Mark the measurement with your pencil before cutting."
+    },
+    {
+      title: "Reopen the second fold",
+      caption: "Restore the first triangle",
+      description: "Reopen the second triangle so the first triangle is restored. Note: the restored first triangle is no longer a perfect triangle because it has three uneven sides.",
+      tip: "Open the folded paper carefully and lay it flat."
+    },
+    {
+      title: "Trim the first side",
+      caption: "Fold over · Trim the extra side",
+      description: "Starting from one side, fold the extra side over and trim it so that side becomes a perfect triangle edge.",
+      tip: "Fold the extra paper over before trimming the edge."
+    },
+    {
+      title: "Measure 16 inches",
+      caption: "16 in · Trim the second side",
+      description: "On the second side, mark a point at 16 inches, cut, and trim the extra paper so this side forms an exact triangle edge. Because this side was cut at 16 inches, the upper side now has a bit of extra paper/extra side lift.",
+      tip: "Mark the 16-inch point clearly before making the cut."
+    },
+    {
+      title: "Make the D-like cut",
+      caption: "17 in · Cut toward the extra side",
+      description: "To fix this: start from the middle, go up 17 inches to the top, and cut from that point out to the extra side at the second side, creating a “D”-like shape.",
+      tip: "Use the diagram to identify the center-to-top direction and the extra side."
+    },
+    {
+      title: "Unfold the finished kite",
+      caption: "Finished outline · 1.5 tawa gudda",
+      description: "Unfold the paper. The final kite shape should resemble a “1.5 tawa gudda”.",
+      tip: "Unfold gently and lay the finished kite paper flat."
+    }
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  let currentStep = 0;
+  let materials = {
+    paper: false,
+    ruler: false,
+    pencil: false,
+    scissors: false
+  };
+
+  function loadProgress() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const saved = JSON.parse(raw);
+
+      if (Number.isInteger(saved.currentStep)) {
+        currentStep = Math.max(0, Math.min(8, saved.currentStep));
+      }
+
+      if (saved.materials && typeof saved.materials === "object") {
+        Object.keys(materials).forEach((key) => {
+          materials[key] = saved.materials[key] === true;
+        });
+      }
+    } catch (error) {
+      // Continue normally if local storage is unavailable or corrupted.
+    }
+  }
+
+  function saveProgress() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        currentStep,
+        materials
+      }));
+      $("save-status").textContent = "Progress saves automatically on this device.";
+    } catch (error) {
+      $("save-status").textContent = "Progress cannot be saved in this browser.";
+    }
+  }
+
+  function buildStepList() {
+    const list = $("step-list");
+    list.replaceChildren();
+
+    steps.forEach((step, index) => {
+      const li = document.createElement("li");
+      const button = document.createElement("button");
+      const number = document.createElement("span");
+      const label = document.createElement("span");
+
+      button.type = "button";
+      button.className = "step-link";
+      button.dataset.step = String(index);
+      number.className = "step-number";
+      number.textContent = String(index + 1);
+      label.textContent = step.title;
+
+      button.append(number, label);
+      button.addEventListener("click", () => goToStep(index));
+      li.append(button);
+      list.append(li);
+    });
+  }
+
+  function render() {
+    const step = steps[currentStep];
+    const number = currentStep + 1;
+    const percent = Math.round(number / steps.length * 100);
+
+    $("step-title").textContent = "Step " + number + ": " + step.title;
+    $("step-count").textContent = "Step " + number + " of " + steps.length;
+    $("nav-status").textContent = "Step " + number + " of " + steps.length;
+    $("progress-percent").textContent = percent + "% complete";
+    $("progress-fill").style.width = percent + "%";
+    $("progress-track").setAttribute("aria-valuenow", String(number));
+    $("step-description").textContent = step.description;
+    $("step-tip").textContent = step.tip;
+    $("diagram-caption").textContent = step.caption;
+
+    for (let i = 1; i <= steps.length; i++) {
+      $("diagram-" + i).hidden = i !== number;
+    }
+
+    document.querySelectorAll(".step-link").forEach((button, index) => {
+      if (index === currentStep) {
+        button.setAttribute("aria-current", "step");
+      } else {
+        button.removeAttribute("aria-current");
+      }
+    });
+
+    $("mobile-steps").value = String(currentStep);
+    $("prev-btn").disabled = currentStep === 0;
+    $("next-btn").disabled = currentStep === steps.length - 1;
+    $("next-btn").textContent = currentStep === steps.length - 1
+      ? "Tutorial complete"
+      : "Next →";
+
+    saveProgress();
+  }
+
+  function goToStep(index) {
+    currentStep = Math.max(0, Math.min(steps.length - 1, index));
+    render();
+  }
+
+  function renderMaterials() {
+    document.querySelectorAll("[data-material]").forEach((input) => {
+      const key = input.dataset.material;
+      input.checked = materials[key];
+    });
+  }
+
+  $("prev-btn").addEventListener("click", () => {
+    if (currentStep > 0) goToStep(currentStep - 1);
+  });
+
+  $("next-btn").addEventListener("click", () => {
+    if (currentStep < steps.length - 1) goToStep(currentStep + 1);
+  });
+
+  $("mobile-steps").addEventListener("change", (event) => {
+    goToStep(Number(event.target.value));
+  });
+
+  document.querySelectorAll("[data-material]").forEach((input) => {
+    input.addEventListener("change", () => {
+      materials[input.dataset.material] = input.checked;
+      saveProgress();
+    });
+  });
+
+  $("reset-btn").addEventListener("click", () => {
+    if (!window.confirm("Reset your current step and clear the materials checklist?")) {
+      return;
+    }
+
+    currentStep = 0;
+    Object.keys(materials).forEach((key) => {
+      materials[key] = false;
+    });
+
+    renderMaterials();
+    render();
+    $("save-status").textContent = "Progress has been reset.";
+
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (error) {
+      // The reset still applies to the current page.
+    }
+  });
+
+  loadProgress();
+  buildStepList();
+  renderMaterials();
+  render();
+})();
+</script>
+</body>
+</html>
